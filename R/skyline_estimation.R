@@ -67,7 +67,7 @@ Skyline.multi.coalescentIntervals <- function(Inter,alpha,epsilon=0.0){
 
 Skyline.multi.phylo <- function(phylo,alpha,epsilon=0.0){
   Inter <- coalescent.intervals.multi(phylo)
-  Skyline.multi.ci(Inter,alpha,epsilon)
+  Skyline.multi.coalescentIntervals(Inter,alpha,epsilon)
 }
 
 
@@ -86,6 +86,6 @@ BetaCoal.maxlik <- function(phylo,epsilon=0.0) {
 FitnessLandscape <- function(phylo,epsilon=0.0){
   Inter <- coalescent.intervals.multi(x = phylo)
   Lik <- sapply(seq(from=1,to=1.99,length.out = 100),function(x) Skyline.multi.coalescentIntervals(Inter,alpha=x,epsilon)$logL)
-  plot(seq(from=1,to=1.99,length.out = 100),Lik)
+  graphics::plot(seq(from=1,to=1.99,length.out = 100),Lik)
   return(Lik)
 }
