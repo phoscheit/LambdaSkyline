@@ -1,9 +1,9 @@
 # Main estimation function : takes as input a coalescentIntervals object, as well as the alpha parameter of the Beta coalescent, and the grouping parameter
 # epsilon, and returns a skyline object, along with its log-likelihood
 
-Skyline.multi.coalescentIntervals <- function(Inter,alpha,epsilon=0.0){
+skyline.multi.coalescentIntervals <- function(Inter,alpha,epsilon=0.0){
   N <- Inter$interval.count # Total number of intervals in the phylogeny
-  Factors <- sapply(Inter$lineages,function(x) TotalRate(x,alpha)) # Total rate of coalescence on each interval
+  Factors <- sapply(Inter$lineages,function(x) total_coal_rate(x,alpha)) # Total rate of coalescence on each interval
   Estimate <- numeric(N) # Logs the skyline estimate
   Coal <- Inter$coalescences # Records if the intervals end with a coalescence or not (regardless of samplings)
   Involved <- Inter$NumInvolved
@@ -65,9 +65,9 @@ Skyline.multi.coalescentIntervals <- function(Inter,alpha,epsilon=0.0){
   return(obj)
 }
 
-Skyline.multi.phylo <- function(phylo,alpha,epsilon=0.0){
+skyline.multi.phylo <- function(phylo,alpha,epsilon=0.0){
   Inter <- coalescent.intervals.multi(phylo)
-  Skyline.multi.coalescentIntervals(Inter,alpha,epsilon)
+  skyline.multi.coalescentIntervals(Inter,alpha,epsilon)
 }
 
 
@@ -76,16 +76,16 @@ Skyline.multi.phylo <- function(phylo,alpha,epsilon=0.0){
 # as demographic function.
 # epsilon is the grouping parameter, as defined originally in (Strimmer, Pybus 2001)
 
-BetaCoal.maxlik <- function(phylo,epsilon=0.0) {
+betacoal.maxlik <- function(phylo,epsilon=0.0) {
   Inter <- coalescent.intervals.multi(phylo)
-  optimx(par=1.5, fn=function(x) -Skyline.multi.coalescentIntervals(Inter,x,epsilon)$logL,lower=0.001,upper=1.999, method="bobyqa")
+  optimx(par=1.5, fn=function(x) -skyline.multi.coalescentIntervals(Inter,x,epsilon)$logL,lower=0.001,upper=1.999, method="bobyqa")
 }
 
 # Computes and plots the likelihood landscape of a given phylogeny as a function of alpha
 
-FitnessLandscape <- function(phylo,epsilon=0.0){
+lik_landscape <- function(phylo,epsilon=0.0){
   Inter <- coalescent.intervals.multi(x = phylo)
-  Lik <- sapply(seq(from=1,to=1.99,length.out = 100),function(x) Skyline.multi.coalescentIntervals(Inter,alpha=x,epsilon)$logL)
+  Lik <- sapply(seq(from=1,to=1.99,length.out = 100),function(x) skyline.multi.coalescentIntervals(Inter,alpha=x,epsilon)$logL)
   graphics::plot(seq(from=1,to=1.99,length.out = 100),Lik)
   return(Lik)
 }

@@ -1,6 +1,6 @@
 # Computes the total rate of coalescence for n lineages under the Beta(2-alpha,alpha)-coalescent
 
-TotalRate <- function(n,alpha) 
+total_coal_rate <- function(n,alpha) 
 { 
   if(n<2) return(0)
   Comb <- sapply(2:n,function(x) lchoose(n,x))
