@@ -8,3 +8,4 @@ Description: Extends skyline functions used in ape to the case of multifurcating
 License: MIT + file LICENSE
 LazyData: TRUE
 Imports: ape, optimx
+Suggests: EpiGenR
