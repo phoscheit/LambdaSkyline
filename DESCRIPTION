@@ -5,6 +5,6 @@ Version: 0.1
 Author: Patrick Hoscheit
 Maintainer: Patrick Hoscheit <patrick.hoscheit@inra.fr>
 Description: Extends skyline functions used in ape to the case of multifurcating trees using Beta(2-alpha,alpha)-coalescents.
-License: MIT
+License: MIT + file LICENSE
 LazyData: TRUE
 Imports: ape, optimx
