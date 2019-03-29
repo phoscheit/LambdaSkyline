@@ -1,7 +1,3 @@
-require(ape)
-require(optimx)
-
-
 # Main estimation function : takes as input a coalescentIntervals object, as well as the alpha parameter of the Beta coalescent, and the grouping parameter
 # epsilon, and returns a skyline object, along with its log-likelihood
 
