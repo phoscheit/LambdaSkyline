@@ -1,4 +1,9 @@
-# Computes the total rate of coalescence for n lineages under the Beta(2-alpha,alpha)-coalescent
+#' This function computes the total rate of coalescence for n lineages under the Beta(2-alpha,alpha)-coalescent
+#' 
+#' @title Computes total rate of coalescence
+#' @param n Number of current lineages
+#' @param alpha Parameter of the Beta(2-alpha,alpha)-coalescent
+#' @export
 
 total_coal_rate <- function(n,alpha) 
 { 
@@ -9,9 +14,13 @@ total_coal_rate <- function(n,alpha)
   sum(sapply(Comb+Lambda,exp))
 }
 
-# Extension of the coalescent.intervals function in ape. Takes a phylogeny (class phylo) as input and returns a coalescentIntervals object,
-# which lists the interval lengths, in backwards time, along with the number of lineages during each of those intervals. Contrary to the ape
-# function, this can deal with multifurcations, as well as serially-sampled (non-ultrametric) trees.
+#' Extension of the coalescent.intervals function in ape. Takes a phylogeny (class phylo) as input and returns a coalescentIntervals object,
+#' which lists the interval lengths, in backwards time, along with the number of lineages during each of those intervals. Contrary to the ape
+#' function, this can deal with multifurcations, as well as serially-sampled (non-ultrametric) trees.
+#'
+#' @title Function that computes the coalescent intervals of multifurcating trees
+#' @param x Phylogeny
+#' @export
 
 coalescent.intervals.multi <- function(x) 
 {
@@ -68,19 +77,29 @@ coalescent.intervals.multi <- function(x)
   return(obj)
 }
 
-# Extension of the branching.times function in ape. Takes a phylogeny (class phylo) and returns a vector with all event times in backwards time
-# including the coalescences and the sampling events.
+#' Extension of the branching.times function in ape. Takes a phylogeny (class phylo) and returns a vector with all event times in backwards time
+#' including the coalescences and the sampling events. 
+#' 
+#' @title Branching times from a (multifurcating) Phylogenetic Tree
+#' @param phy A phylogeny
+#' @export
+
 
 branching.times.samp <- function(phy)
 {
   if (!inherits(phy, "phylo"))
     stop('object "phy" is not of class "phylo"')
-  DistToRoot <- dist.nodes(phy)[length(phy$tip.label)+1,] # length(phy$tip.label)+1 is the label of the root, so we get all distances to the root
+  DistToRoot <- ape::dist.nodes(phy)[length(phy$tip.label)+1,] # length(phy$tip.label)+1 is the label of the root, so we get all distances to the root
   TotalDepth <- max(DistToRoot)
   TotalDepth - DistToRoot # We want time backwards from the last sampling event
 }
 
-# Transforms a binary phylogeny into a multifurcating one, collapsing all branches shorter than tol
+#' Transforms a binary phylogeny into a multifurcating one, collapsing all branches shorter than tol
+#' 
+#' @title Transforming a binary phylogeny into a multifurcating one
+#' @param phylo A phylogeny
+#' @param tol The collapsing parameter
+#' @export
 
 di2multi.cons <- function(phylo, tol = 1e-8)
 {

@@ -1,5 +1,11 @@
-# Main estimation function : takes as input a coalescentIntervals object, as well as the alpha parameter of the Beta coalescent, and the grouping parameter
-# epsilon, and returns a skyline object, along with its log-likelihood
+#' Main estimation function : takes as input a coalescentIntervals object, as well as the alpha parameter of the Beta coalescent, and the grouping parameter
+#' epsilon, and returns a skyline object, along with its log-likelihood
+#' 
+#' @title Multifurcating skyline plot estimate of effective population size
+#' @param Inter A coalescent interval object
+#' @param alpha The alpha parameter of the Beta(2-alpha,alpha)-coalescent
+#' @param epsilon Grouping parameter, as defined originally in (Strimmer, Pybus 2001)
+#' @export
 
 skyline.multi.coalescentIntervals <- function(Inter,alpha,epsilon=0.0){
   N <- Inter$interval.count # Total number of intervals in the phylogeny
@@ -28,7 +34,7 @@ skyline.multi.coalescentIntervals <- function(Inter,alpha,epsilon=0.0){
   NInter <- N
   
   if(epsilon > 0.0){
-    CollInter <- collapsed.intervals(Inter,epsilon)
+    CollInter <- ape::collapsed.intervals(Inter,epsilon)
     NColl <- CollInter$collapsed.interval.count
     EstimateColl <- numeric(NColl)
     for(i in 1:NColl){
@@ -65,23 +71,39 @@ skyline.multi.coalescentIntervals <- function(Inter,alpha,epsilon=0.0){
   return(obj)
 }
 
+#' Wrapper function for phylo objects
+#' 
+#' @title Multifurcating skyline plot estimate of effective population size
+#' @param phylo An input phylogeny
+#' @param alpha The alpha parameter of the Beta(2-alpha,alpha)-coalescent
+#' @param epsilon Grouping parameter, as defined originally in (Strimmer, Pybus 2001)
+#' @export
+
 skyline.multi.phylo <- function(phylo,alpha,epsilon=0.0){
   Inter <- coalescent.intervals.multi(phylo)
   skyline.multi.coalescentIntervals(Inter,alpha,epsilon)
 }
 
-
-
-# Performs a maximum-likelihood estimation of the alpha parameter, with the multifurcating skyline
-# as demographic function.
-# epsilon is the grouping parameter, as defined originally in (Strimmer, Pybus 2001)
+#' Performs a maximum-likelihood estimation of the alpha parameter, with the multifurcating skyline
+#' as demographic function.
+#'
+#' @title Maximum-likelihood astimation of alpha
+#' @param phylo An input phylogeny
+#' @param epsilon Grouping parameter, as defined originally in (Strimmer, Pybus 2001)
+#' @export
 
 betacoal.maxlik <- function(phylo,epsilon=0.0) {
   Inter <- coalescent.intervals.multi(phylo)
-  optimx(par=1.5, fn=function(x) -skyline.multi.coalescentIntervals(Inter,x,epsilon)$logL,lower=0.001,upper=1.999, method="bobyqa")
+  optimx::optimx(par=1.5, fn=function(x) -skyline.multi.coalescentIntervals(Inter,x,epsilon)$logL,
+                 lower=0.001,upper=1.999, method="bobyqa")
 }
 
-# Computes and plots the likelihood landscape of a given phylogeny as a function of alpha
+#' Computes and plots the likelihood landscape of a given phylogeny as a function of alpha
+#' 
+#' @title Likelihood landscape of a phylogenetic tree
+#' @param phylo An input phylogeny
+#' @param epsilon Grouping parameter, as defined originally in (Strimmer, Pybus 2001)
+#' @export
 
 lik_landscape <- function(phylo,epsilon=0.0){
   Inter <- coalescent.intervals.multi(x = phylo)

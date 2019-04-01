@@ -9,3 +9,5 @@ License: MIT + file LICENSE
 LazyData: TRUE
 Imports: ape, optimx
 Suggests: EpiGenR
+RoxygenNote: 6.1.1
+Encoding: UTF-8
