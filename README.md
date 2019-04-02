@@ -1,7 +1,7 @@
 # LambdaSkyline
 
 The `LambdaSkyline` package provides functions to manipulate multifurcating trees (as `ape` `phylo` objects) and
-compute 
+compute their skyline plot (originally introduced by Pybus et al.), using Lambda-coalescents (specifically, Beta(2-alpha,alpha)-coalescents) as model. The package also provides functions for simulating trees under the Beta-coalescent, using the results in (Schweinsberg 2003).
 
 ## Installation
 
