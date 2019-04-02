@@ -10,7 +10,7 @@
 #' 
 #' @export
 
-SimCoal <- function(n,alpha,N,pop_size){
+simcoal <- function(n,alpha,N,pop_size){
   T_F <- length(pop_size) # Number of generations to be simulated
   t <- T_F # Current time index
   
@@ -24,11 +24,11 @@ SimCoal <- function(n,alpha,N,pop_size){
   Lines <- as.list(1:n) # Will contain an index (in 1:n) of one representative lineage for each block
   Trees <- vector("list",n) # Will contain the current string describing the tree
   for (i in 1:n){
-    Trees[[i]]<- read.tree(text=paste("(",as.character(Labels[i]),":0);",sep=""))
+    Trees[[i]]<- ape::read.tree(text=paste("(",as.character(Labels[i]),":0);",sep=""))
     Trees[[i]]$root.edge <- 0
   }
   
-  Reseau<-Lattice(pivot=2,width=1,Length=10000)
+  Reseau <- distr::Lattice(pivot=2,width=1,Length=10000)
   Poids <- vector(mode="numeric",length=10000)
   for(i in 1:9998) {
     Poids[i+1]<-i^(-alpha-1)
@@ -39,11 +39,11 @@ SimCoal <- function(n,alpha,N,pop_size){
     Poids[i+1]<- Poids[i+1]*2/(3*Somme)
   }
   Poids[1]<-1/3
-  LoiAlpha <- LatticeDistribution(lattice=Reseau,prob=Poids)
+  LoiAlpha <- distr::LatticeDistribution(lattice=Reseau,prob=Poids)
   rm(Poids,Somme,Reseau)
   
   while(b!=1 & t!=1){
-    X <- r(LoiAlpha)(ceiling(pop_size[t-1]*N))
+    X <- distr::r(LoiAlpha)(ceiling(pop_size[t-1]*N))
     NumDes <- sum(X)
     DesPot <- vector(mode="numeric",length=NumDes)
     j<-1
@@ -70,7 +70,7 @@ SimCoal <- function(n,alpha,N,pop_size){
               i0 <- k
             }
             else{
-              Trees[[i0]] <- collapse.singles(Trees[[i0]]+Trees[[k]])
+              Trees[[i0]] <- ape::collapse.singles(Trees[[i0]]+Trees[[k]])
               b <- b-1
             }
           }
